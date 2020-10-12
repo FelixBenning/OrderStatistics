@@ -1,0 +1,9 @@
+name = "OrderStatistics"
+uuid = "ef135b7c-d6e0-42c1-83cf-5d3155b645a8"
+authors = ["Unknown "]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
