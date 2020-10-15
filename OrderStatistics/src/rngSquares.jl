@@ -1,5 +1,3 @@
-module rng
-
 import Random: AbstractRNG
 
 
@@ -37,11 +35,29 @@ end
     return [Float32(squares_rng(UInt64(ctr), seed))/typemax(UInt32) for ctr in 1:number]
 end
 
+struct RVGenerator
+    pseudoInverse
+    stop::UInt64
+end
+
+function Base.iterate(rvg::RVGenerator, state::UInt64=UInt64(0))
+    if rvg.stop >= state
+        return (rvg.pseudoInverse(Float32(squares_rng(state, key))/typemax(UInt32)), state+1)
+    else
+        return nothing
+    end
+end
+
 @testset "Staticial Sanity Check" begin
     rv = uniform(UInt32(10^8), key)
     @test isapprox(mean(rv), 0.5)
     @test isapprox(var(rv), 1/12)
 end
 
-end # module
+# @testset "Iterator" begin
+#     rvs = RVGenerator(x->x, 10)
+#     for rv = rvs
+#         print(rv)
+#     end
+# end
 
