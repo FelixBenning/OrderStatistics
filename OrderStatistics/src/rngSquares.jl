@@ -47,7 +47,8 @@ end
 
 function Base.iterate(rvg::RVGenerator, state::UInt64=UInt64(0))
     if rvg.stop >= state
-        return rvg.pseudoInverse(Float32(squares_rng(state, rvg.seed))/typemax(UInt32)), state+1
+        rv = rvg.pseudoInverse(Float32(squares_rng(rvg.start + rvg.stride * state, rvg.seed))/typemax(UInt32))
+        return rv, state+1
     else
         return nothing
     end
