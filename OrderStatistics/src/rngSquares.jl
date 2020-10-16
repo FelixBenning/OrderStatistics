@@ -39,12 +39,15 @@ end
 
 struct RVGenerator{T}
     pseudoInverse::T
+    start::UInt64
+    stride::UInt64
     stop::UInt64
+    seed::UInt64
 end
 
 function Base.iterate(rvg::RVGenerator, state::UInt64=UInt64(0))
     if rvg.stop >= state
-        return (rvg.pseudoInverse(Float32(squares_rng(state, get_seed()))/typemax(UInt32)), state+1)
+        return rvg.pseudoInverse(Float32(squares_rng(state, rvg.seed))/typemax(UInt32)), state+1
     else
         return nothing
     end

@@ -6,11 +6,11 @@ import CUDA: @cuda
 
 include("rngSquares.jl")
 
-function gpu_parallel!(results, sampleSize, pseudoInverse)
+function gpu_parallel!(results, sampleSize, pseudoInverse, seed::UInt64)
     index = (CUDA.blockIdx().x - 1) * CUDA.blockDim().x + CUDA.threadIdx().x
     stride = CUDA.blockDim().x * CUDA.gridDim().x
     for thread in index:stride:length(results)
-        rvg = RVGenerator(pseudoInverse, UInt64(sampleSize))
+        rvg = RVGenerator(pseudoInverse, UInt64(thread), UInt64(length(results)), UInt64(sampleSize), seed)
         results[thread] = largest(rvg)
     end
 end
@@ -19,7 +19,7 @@ function sample_extreme_values(sampleSize, superSampleSize, pseudoInverse)::Arra
     numblocks = ceil(Int, superSampleSize/256)
     gpu_res = CUDA.CuArray{Float32}(undef, superSampleSize)
     cpu_res = Array{Float32}(undef, superSampleSize)
-    @cuda threads=256 blocks=numblocks gpu_parallel!(gpu_res, sampleSize, pseudoInverse)
+    @cuda threads=256 blocks=numblocks gpu_parallel!(gpu_res, sampleSize, pseudoInverse, get_seed())
     copyto!(cpu_res, gpu_res)
     return cpu_res
 end
