@@ -35,8 +35,8 @@ end
     return [Float32(squares_rng(UInt64(ctr), seed))/typemax(UInt32) for ctr in 1:number]
 end
 
-struct RVGenerator
-    pseudoInverse
+struct RVGenerator{T}
+    pseudoInverse::T
     stop::UInt64
 end
 

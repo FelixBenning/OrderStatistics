@@ -5,7 +5,7 @@ include("rngSquares.jl")
 import CUDA
 import CUDA: @cuda
 
-function gpu_parallel!(results, pseudoinverse, sampleSize)
+function gpu_parallel!(results, pseudoinverse::F, sampleSize) where F
     index = (CUDA.blockIdx().x - 1) * CUDA.blockDim().x + CUDA.threadIdx().x
     stride = CUDA.blockDim().x * CUDA.gridDim().x
     for thread  = index:stride:length(results)
