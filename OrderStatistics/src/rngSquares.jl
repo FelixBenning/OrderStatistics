@@ -47,10 +47,12 @@ end
 
 function Base.iterate(rvg::RVGenerator, state::Tuple{UInt64,UInt64}=(UInt64(0),UInt64(0)))
     if rvg.stop >= state[1]
+        attempt = state[2]
         while true
-            rv, success = rvg.pseudoInverse(Float32(squares_rng(rvg.start + rvg.stride * state[2], rvg.seed))/typemax(UInt32))
+            rv, success = rvg.pseudoInverse(Float32(squares_rng(rvg.start + rvg.stride * attempt, rvg.seed))/typemax(UInt32))
+            attempt += 1 # monte carlo attempts
             if success
-                return rv, (state[1]+1,state[2]+1)
+                return rv, (state[1]+1,attempt)
             end
         end
     else
