@@ -39,4 +39,16 @@ function largest(generator::RVGenerator{T}) where T
     return largest
 end
 
+function diff_largest_second(generator::RVGenerator{T}) where T
+    largest = Float32(0)
+    second = Float32(0)
+    for rv in generator
+        if rv > second
+            second = min(largest, rv)
+            largest = max(largest, rv)
+        end
+    end
+    return largest - second
+end
+
 end # module
