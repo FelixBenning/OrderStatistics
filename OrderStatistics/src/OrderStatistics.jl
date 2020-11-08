@@ -15,7 +15,7 @@ function gpu_parallel!(results, sampleSize, pseudoInverse, seed::UInt64, callabl
     end
 end
 
-function sample_extreme_values(sampleSize, superSampleSize, pseudoInverse; callable=largest, seed=get_seed(), rng::RNG=unifWithPseudoInvGen)::Array{Float32,1}
+function sample_extreme_values(sampleSize, superSampleSize, pseudoInverse, callable=largest, seed=get_seed(), rng::RNG=unifWithPseudoInvGen)::Array{Float32,1}
     if typeof(pseudoInverse(0.5)) <: Tuple
         # monte carlo pseudoInverse (can fail -> Tuple{rv, accepted::Bool})
         fixedPseudoInverse = pseudoInverse
