@@ -8,7 +8,7 @@ using InteractiveUtils
 begin
 	using OrderStatistics:sample_extreme_values, diff_largest_second
 	using Statistics:mean,std
-	using Plots:plot, plot!
+	using Plots:plot, plot!, svg
 	using LaTeXStrings
 end
 
@@ -44,7 +44,10 @@ end
 
 # ╔═╡ d1d3f3c0-2395-11eb-00ea-59aa6de8c60f
 begin
-	p = plot(xaxis=:log, yaxis=:log)
+	p = plot(
+		xaxis=("sample size",:log), 
+		yaxis=("mean(largest - second_largest)",:log)
+	)
 	plot!(p, times, unif_mean, label ="U[0,1]", markershape=:auto)
 	plot!(p, times, exp_mean, label = "Exp(1)", markershape=:auto)
 	plot!(p, times, exp_mean_2, label = "Exp(2)", markershape=:auto)
@@ -57,9 +60,13 @@ begin
 	p
 end
 
+# ╔═╡ 0246d1e0-239f-11eb-12d4-2d48509d4137
+svg(p, "plot.svg")
+
 # ╔═╡ Cell order:
 # ╠═98aec1c2-21e1-11eb-31dd-a19c407f373c
 # ╠═dca3e9a0-21e1-11eb-22b4-07c891533980
 # ╠═32c4fca2-2392-11eb-133e-213db77f04d1
 # ╠═bcc952c0-2392-11eb-1e54-0b4d8fa5c73b
 # ╠═d1d3f3c0-2395-11eb-00ea-59aa6de8c60f
+# ╠═0246d1e0-239f-11eb-12d4-2d48509d4137
